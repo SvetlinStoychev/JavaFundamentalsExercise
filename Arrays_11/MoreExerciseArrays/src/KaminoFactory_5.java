@@ -1,100 +1,106 @@
 import java.util.Scanner;
 
 public class KaminoFactory_5 {
+    private static int currentSum = 0;
+    private static int bestSum = 0;
+    private static int longestSubsequenceOfOnes = 0;
+    private static int[] bestDnaSequence = new int[0];
+    private static int bestStartIndex = 0;
+    private static int bestDnaSample = 1;
     public static void main(String[] args) {
         Scanner reader = new Scanner(System.in);
 
-        int lengthSequences = Integer.parseInt(reader.nextLine());
-        String userInput = reader.nextLine();
+        int dnaLength = Integer.parseInt(reader.nextLine());
+        String inputCommand = reader.nextLine();
 
-        int resultSequenceCnt = 0;
-        int resultStartIndex = -1;
-        int[] resultSequence = new int[lengthSequences];
-        int resultSum = 0;
-        int bestSample = 1;
-        int bestSampleCnt = 1;
-        int maxSum = 0;
-        int maxSumSemple = 0;
-        int[] maxSumSempleArr = new int[lengthSequences];
+        int sampleCnt = 0;
+        while (!inputCommand.equals("Clone them!")) {
 
-        while (!userInput.equals("Clone them!")) {
+            int[] currentDnaSequence = new int[dnaLength];
+            currentDnaSequence = createCurrentSequence(inputCommand, dnaLength);
+            sampleCnt++;
 
-            int[] currentSequence = new int[lengthSequences];
-            int indexCnt = 0;
-            int currentSum = 0;
+            int[] currentSubsequenceOfOnes = calculateSubsequenceOfOnes(currentDnaSequence);
+            int currentSubsequenceLength = currentSubsequenceOfOnes[0];
+            int currentSubsequenceStartIndex = currentSubsequenceOfOnes[1];
 
-
-            for (int i = 0; i < userInput.length(); i++) {
-
-                if (userInput.charAt(i) == '1') {
-                    currentSequence[indexCnt] = 1;
-                    currentSum++;
-                    indexCnt++;
-                }  else if (userInput.charAt(i) == '0') {
-                    currentSequence[indexCnt] = 0;
-                    indexCnt++;
-                }
-            }
-
-            if (currentSum > maxSum) {
-                maxSum = currentSum;
-                maxSumSemple = bestSampleCnt;
-                maxSumSempleArr = currentSequence;
-            }
-
-            int bestCntSequence = 1;
-            int bestStartIndex = -1;
-            for (int i = 0; i < currentSequence.length; i++) {
-
-                int sequenceCnt = 1;
-                int sequenceStartIndex = i;
-                for (int j = i + 1; j < currentSequence.length; j++) {
-                    if (currentSequence[i] == 1 && currentSequence[j] == 1) {
-                        sequenceCnt++;
-                    } else {
-                        break;
-                    }
-                }
-
-                if (sequenceCnt > bestCntSequence) {
-                    bestCntSequence = sequenceCnt;
-                    bestStartIndex = sequenceStartIndex;
-                }
-            }
-
-            if (bestCntSequence > resultSequenceCnt) {
-                resultSequenceCnt = bestCntSequence;
-                resultStartIndex = bestStartIndex;
-                resultSequence = currentSequence;
-                resultSum = bestCntSequence;
-                bestSample = bestSampleCnt;
-            } else if (bestCntSequence == resultSequenceCnt) {
-                if (bestStartIndex < resultStartIndex) {
-                    resultStartIndex = bestStartIndex;
-                    resultSequence = currentSequence;
-                    resultSum = bestCntSequence;
-                    bestSample = bestSampleCnt;
-                } else if (bestStartIndex == resultStartIndex) {
-                    if(maxSum > currentSum) {
-                        resultSum = maxSum;
-                        resultSequence = maxSumSempleArr;
-                        bestSample = maxSumSemple;
-                    } else {
-                        resultSum = currentSum;
-                        resultSequence = currentSequence;
-                        bestSample = bestSampleCnt;
+            if (currentSubsequenceLength > longestSubsequenceOfOnes) {
+                longestSubsequenceOfOnes = currentSubsequenceLength;
+                bestDnaSequence = currentDnaSequence;
+                bestStartIndex = currentSubsequenceStartIndex;
+                bestSum = currentSum;
+                bestDnaSample = sampleCnt;
+            } else if (currentSubsequenceLength == longestSubsequenceOfOnes) {
+                if (currentSubsequenceStartIndex < bestStartIndex) {
+                    bestDnaSequence = currentDnaSequence;
+                    bestStartIndex = currentSubsequenceStartIndex;
+                    bestSum = currentSum;
+                    bestDnaSample = sampleCnt;
+                } else if (currentSubsequenceStartIndex == bestStartIndex) {
+                    if (currentSum > bestSum) {
+                        bestDnaSequence = currentDnaSequence;
+                        bestSum = currentSum;
+                        bestDnaSample = sampleCnt;
                     }
                 }
             }
 
-            bestSampleCnt++;
-            userInput = reader.nextLine();
+            inputCommand = reader.nextLine();
         }
 
-        System.out.printf("Best DNA sample %d with sum: %d.%n", bestSample, resultSum);
+        printBestDna();
+    }
 
-        for (int i = 0; i < resultSequence.length; i++) {
-            System.out.printf("%d ", resultSequence[i]);
+    private static void printBestDna() {
+        System.out.printf("Best DNA sample %d with sum: %d.%n", bestDnaSample, bestSum);
+        for (int i = 0; i < bestDnaSequence.length; i++) {
+            System.out.printf("%d ", bestDnaSequence[i]);
         }
+        System.out.println();
+    }
+
+    private static int[] calculateSubsequenceOfOnes(int[] sequence) {
+        int[] bestLengthOfOnes = new int[2];
+        bestLengthOfOnes[0] = 0;
+        bestLengthOfOnes[1] = 0;
+        for (int i = 0; i < sequence.length - 1; i++) {
+
+            int currentCnt = 0;
+            if (sequence[i] == 1) {
+                currentCnt++;
+            }
+
+            for (int j = i + 1; j < sequence.length ; j++) {
+                if (sequence[i] == 1 && sequence[j] == 1) {
+                    currentCnt++;
+                } else {
+                    break;
+                }
+            }
+
+            if (currentCnt > bestLengthOfOnes[0]) {
+                bestLengthOfOnes[0] = currentCnt;
+                bestLengthOfOnes[1] = i;
+            }
+        }
+
+        return bestLengthOfOnes;
+    }
+
+    private static int[] createCurrentSequence(String input, int length) {
+        currentSum = 0;
+        int[] result = new int[length];
+        int arrCnt = 0;
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == '1') {
+                result[arrCnt] = 1;
+                arrCnt++;
+                currentSum++;
+            } else if(input.charAt(i) == '0') {
+                result[arrCnt] = 0;
+                arrCnt++;
+            }
+        }
+        return result;
     }
 }
