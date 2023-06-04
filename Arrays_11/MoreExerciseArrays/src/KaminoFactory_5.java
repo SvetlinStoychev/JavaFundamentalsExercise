@@ -44,7 +44,7 @@ public class KaminoFactory_5 {
                     }
                 }
             }
-
+            
             inputCommand = reader.nextLine();
         }
 
