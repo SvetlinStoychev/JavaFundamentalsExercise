@@ -7,6 +7,7 @@ public class KaminoFactory_5 {
     private static int[] bestDnaSequence = new int[0];
     private static int bestStartIndex = 0;
     private static int bestDnaSample = 1;
+    private static boolean isCurrentSequenceLegal = true;
     public static void main(String[] args) {
         Scanner reader = new Scanner(System.in);
 
@@ -18,6 +19,11 @@ public class KaminoFactory_5 {
 
             int[] currentDnaSequence = new int[dnaLength];
             currentDnaSequence = createCurrentSequence(inputCommand, dnaLength);
+
+            if (!isCurrentSequenceLegal) {
+                inputCommand = reader.nextLine();
+                break;
+            }
             sampleCnt++;
 
             int[] currentSubsequenceOfOnes = calculateSubsequenceOfOnes(currentDnaSequence);
@@ -56,7 +62,7 @@ public class KaminoFactory_5 {
         for (int i = 0; i < bestDnaSequence.length; i++) {
             System.out.printf("%d ", bestDnaSequence[i]);
         }
-        System.out.println();
+        //System.out.println();
     }
 
     private static int[] calculateSubsequenceOfOnes(int[] sequence) {
@@ -100,6 +106,10 @@ public class KaminoFactory_5 {
                 result[arrCnt] = 0;
                 arrCnt++;
             }
+        }
+
+        if (arrCnt != result.length) {
+            isCurrentSequenceLegal = false;
         }
         return result;
     }
