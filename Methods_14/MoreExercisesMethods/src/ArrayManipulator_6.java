@@ -62,21 +62,137 @@ public class ArrayManipulator_6 {
     }
 
     private static void executeFirstEven(int count) {
+        if (count > arr.length - 1) {
+            System.out.println("Invalid count");
+        } else {
+            int currentCnt = 0;
+            System.out.print("[");
+
+            for (int i = 0; i < arr.length; i++) {
+
+                if (arr[i] % 2 == 0) {
+
+                    if (currentCnt != 0) {
+                        System.out.print(", ");
+                    }
+
+                    System.out.printf("%d", arr[i]);
+                    currentCnt++;
+                }
+
+                if (currentCnt == count) {
+                    System.out.print("]");
+                    break;
+                } else if (i == arr.length - 1) {
+                    System.out.print("]");
+                }
+            }
+        }
     }
 
     private static void executeMinOdd() {
+        int minOddNum = Integer.MAX_VALUE;
+        int minOddNumIndex = -1;
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] % 2 != 0) {
+                if (arr[i] <= minOddNum) {
+                    minOddNum = arr[i];
+                    minOddNumIndex = i;
+                }
+            }
+        }
+
+        if (minOddNumIndex == -1) {
+            System.out.println("No matches");
+        } else {
+            System.out.println(minOddNumIndex);
+        }
     }
 
     private static void executeMinEven() {
+        int minEvenNum = Integer.MAX_VALUE;
+        int minEvenNumIndex = -1;
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] % 2 == 0) {
+                if (arr[i] <= minEvenNum) {
+                    minEvenNum = arr[i];
+                    minEvenNumIndex = i;
+                }
+            }
+        }
+
+        if (minEvenNumIndex == -1) {
+            System.out.println("No matches");
+        } else {
+            System.out.println(minEvenNumIndex);
+        }
     }
 
     private static void executeMaxOdd() {
+        int maxOddNum = Integer.MIN_VALUE;
+        int maxOddNumIndex = -1;
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] % 2 != 0) {
+                if (arr[i] >= maxOddNum) {
+                    maxOddNum = arr[i];
+                    maxOddNumIndex = i;
+                }
+            }
+        }
+
+        if (maxOddNumIndex == -1) {
+            System.out.println("No matches");
+        } else {
+            System.out.println(maxOddNumIndex);
+        }
     }
 
     private static void executeMaxEven() {
+        int maxEvenNum = Integer.MIN_VALUE;
+        int maxEvenNumIndex = -1;
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] % 2 == 0) {
+                if (arr[i] >= maxEvenNum) {
+                    maxEvenNum = arr[i];
+                    maxEvenNumIndex = i;
+                }
+            }
+        }
+
+        if (maxEvenNumIndex == -1) {
+            System.out.println("No matches");
+        } else {
+            System.out.println(maxEvenNumIndex);
+        }
     }
 
     private static void executeExchange(int index) {
+        if (index < 0 || index > arr.length - 1) {
+            System.out.println("Invalid index");
+        } else {
+            int[] firstArr = new int[index + 1];
+            int[] secondArr = new int[arr.length - (index + 1)];
+
+            for (int i = 0; i < firstArr.length; i++) {
+                firstArr[i] = arr[i];
+            }
+
+            for (int i = 0; i < secondArr.length; i++) {
+                secondArr[i] = arr[i + index + 1];
+            }
+
+            for (int i = 0; i < secondArr.length; i++) {
+                arr[i] = secondArr[i];
+            }
+
+            for (int i = 0; i < firstArr.length; i++) {
+                arr[i + secondArr.length] = firstArr[i];
+            }
+        }
     }
 
     private static void createInputArray(String inputDataArr) {
