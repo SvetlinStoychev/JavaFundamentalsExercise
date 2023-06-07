@@ -50,19 +50,133 @@ public class ArrayManipulator_6 {
     }
 
     private static void printFinalArrayState() {
+        System.out.print("[");
+
+        for (int i = 0; i < arr.length; i++) {
+
+            if (i != 0) {
+                System.out.print(", ");
+            }
+
+            System.out.printf("%d", arr[i]);
+
+            if (i == arr.length - 1) {
+                System.out.printf("]%n");
+            }
+        }
     }
 
-    private static void executeLastOdd(int countLast) {
+    private static void executeLastOdd(int count) {
+        if (count > arr.length) {
+            System.out.println("Invalid count");
+        } else {
+            int[] lastOddArr = new int[arr.length];
+            int currentOddCnt = 0;
+
+            for (int i = arr.length - 1; i >= 0; i--) {
+
+                if (arr[i] % 2 != 0) {
+                    lastOddArr[currentOddCnt] = arr[i];
+                    currentOddCnt++;
+                }
+
+                if (currentOddCnt == count) {
+                    break;
+                }
+            }
+
+            if (currentOddCnt == 0) {
+                System.out.println("[]");
+            } else {
+                System.out.print("[");
+
+                for (int i = currentOddCnt - 1; i >= 0 ; i--) {
+
+                    if (currentOddCnt - 1 != i) {
+                        System.out.print(", ");
+                    }
+
+                    System.out.printf("%d", lastOddArr[i]);
+
+                    if (i == 0) {
+                        System.out.printf("]%n");
+                    }
+                }
+            }
+        }
     }
 
-    private static void executeLastEven(int countLast) {
+    private static void executeLastEven(int count) {
+        if (count > arr.length) {
+            System.out.println("Invalid count");
+        } else {
+            int[] lastEvenArr = new int[arr.length];
+            int currentEvenCnt = 0;
+
+            for (int i = arr.length - 1; i >= 0; i--) {
+
+                if (arr[i] % 2 == 0) {
+                    lastEvenArr[currentEvenCnt] = arr[i];
+                    currentEvenCnt++;
+                }
+
+                if (currentEvenCnt == count) {
+                    break;
+                }
+            }
+
+            if (currentEvenCnt == 0) {
+                System.out.println("[]");
+            } else {
+                System.out.print("[");
+
+                for (int i = currentEvenCnt - 1; i >= 0 ; i--) {
+
+                    if (currentEvenCnt - 1 != i) {
+                        System.out.print(", ");
+                    }
+
+                    System.out.printf("%d", lastEvenArr[i]);
+
+                    if (i == 0) {
+                        System.out.printf("]%n");
+                    }
+                }
+            }
+        }
     }
 
     private static void executeFirstOdd(int count) {
+        if (count > arr.length ) {
+            System.out.println("Invalid count");
+        } else {
+            int currentCnt = 0;
+            System.out.print("[");
+
+            for (int i = 0; i < arr.length; i++) {
+
+                if (arr[i] % 2 != 0) {
+
+                    if (currentCnt != 0) {
+                        System.out.print(", ");
+                    }
+
+                    System.out.printf("%d", arr[i]);
+                    currentCnt++;
+                }
+
+                if (currentCnt == count) {
+                    System.out.printf("]%n");
+                    break;
+                } else if (i == arr.length - 1) {
+                    System.out.printf("]%n");
+                }
+            }
+        }
     }
 
     private static void executeFirstEven(int count) {
-        if (count > arr.length - 1) {
+        if (count > arr.length) {
             System.out.println("Invalid count");
         } else {
             int currentCnt = 0;
@@ -81,10 +195,10 @@ public class ArrayManipulator_6 {
                 }
 
                 if (currentCnt == count) {
-                    System.out.print("]");
+                    System.out.printf("]%n");
                     break;
                 } else if (i == arr.length - 1) {
-                    System.out.print("]");
+                    System.out.printf("]%n");
                 }
             }
         }
