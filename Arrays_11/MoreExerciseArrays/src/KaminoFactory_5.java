@@ -47,6 +47,8 @@ public class KaminoFactory_5 {
                         bestDnaSequence = currentDnaSequence;
                         bestSum = currentSum;
                         bestDnaSample = sampleCnt;
+                    } else {
+                        bestDnaSequence = currentDnaSequence;
                     }
                 }
             }
