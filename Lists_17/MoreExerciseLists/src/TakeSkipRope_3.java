@@ -37,9 +37,9 @@ public class TakeSkipRope_3 {
 
         int textIndex = 0;
         for (int i = 0; i < takeList.size(); i++) {
-            int charCnt = takeList.get(i);
+            int takeCnt = takeList.get(i);
             int skipCnt = 0;
-            for (int j = textIndex; j < textIndex + charCnt; j++) {
+            for (int j = textIndex; j < textIndex + takeCnt; j++) {
                 if (j > userInput.size() - 1) {
                     break;
                 }
