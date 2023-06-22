@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class UsingTheBuiltInJavaClasses_1 {
+public class RandomizeWords_1 {
     public static void main(String[] args) {
         Scanner reader = new Scanner(System.in);
 
