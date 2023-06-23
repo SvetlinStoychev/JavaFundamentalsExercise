@@ -3,6 +3,32 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Songs_4 {
+    public static class Song {
+        private String typeList;
+        private String name;
+        private String time;
+
+        public String getTypeList() {
+            return this.typeList;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public void setTypeList(String typeList) {
+            this.typeList = typeList;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
+    }
+
     public static void main(String[] args) {
         Scanner reader = new Scanner(System.in);
 
