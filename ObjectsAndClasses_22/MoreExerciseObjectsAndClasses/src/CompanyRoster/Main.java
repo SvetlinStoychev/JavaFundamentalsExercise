@@ -38,5 +38,7 @@ public class Main {
                 departmentObj.add(currentEmployee);
             }
         }
+
+        departmentObj.printBestAverageDepartmentData();
     }
 }
