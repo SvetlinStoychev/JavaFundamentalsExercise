@@ -63,7 +63,7 @@ public class Team {
             names.add(user.getName());
         }
 
-        Collections.sort(names);
+        Collections.sort(names, String.CASE_INSENSITIVE_ORDER);
 
         for (int i = 0; i < names.size(); i++) {
 

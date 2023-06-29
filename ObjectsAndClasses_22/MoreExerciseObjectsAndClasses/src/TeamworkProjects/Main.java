@@ -116,7 +116,7 @@ public class Main {
                 names.add(disbandTeams.get(i).getName());
             }
 
-            Collections.sort(names);
+            Collections.sort(names, String.CASE_INSENSITIVE_ORDER);
 
             for (int i = 0; i < names.size(); i++) {
                 System.out.println(names.get(i));
