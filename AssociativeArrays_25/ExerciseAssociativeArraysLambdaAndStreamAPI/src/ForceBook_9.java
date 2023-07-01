@@ -12,74 +12,77 @@ public class ForceBook_9 {
         LinkedHashMap<String, ArrayList<String>> forceBookMap = new LinkedHashMap<>();
 
         while (!command.equals("Lumpawaroo")) {
-            String[] commandArr = command.split(" ");
-            String inputForceSide = commandArr[0];
-            String inputCommand = commandArr[1];
-            String inputForceUser = commandArr[2];
 
-            switch (inputCommand) {
-                case "|":
+            ArrayList<String> currentUserList = new ArrayList<>();
 
-                    if (!forceBookMap.containsKey(inputForceSide)) {
+            if (command.contains("|")) {
 
-                        ArrayList<String> forceUsers = new ArrayList<>();
-                        forceUsers.add(inputForceUser);
-                        forceBookMap.put(inputForceSide, forceUsers);
+                String[] commandsArr = command.split(" \\| ");
+                String forceSide = commandsArr[0];
+                String forceUser = commandsArr[1];
 
-                    } else {
+                if ((!checkIfUserExistInMap(forceBookMap, forceUser)) && (!forceBookMap.containsKey(forceSide))) {
 
-                        if (!checkIfUserExistInMap(forceBookMap, inputForceUser)) {
+                    currentUserList.add(forceUser);
+                    forceBookMap.put(forceSide, currentUserList);
+                } else if ((!checkIfUserExistInMap(forceBookMap, forceUser)) && forceBookMap.containsKey(forceSide)) {
 
-                            ArrayList<String> usersList = forceBookMap.get(inputForceSide);
-                            usersList.add(inputForceUser);
-                            forceBookMap.put(inputForceSide, usersList);
-                        }
+                    currentUserList = forceBookMap.get(forceSide);
+                    currentUserList.add(forceUser);
+                    forceBookMap.put(forceSide, currentUserList);
+                }
+
+            } else if (command.contains("->")) {
+
+                String[] commandsArr = command.split(" -> ");
+                String forceUser = commandsArr[0];
+                String forceSide = commandsArr[1];
+
+                if ((!checkIfUserExistInMap(forceBookMap, forceUser)) && (!forceBookMap.containsKey(forceSide))) {
+
+                    currentUserList.add(forceUser);
+                    forceBookMap.put(forceSide, currentUserList);
+
+                    System.out.printf("%s joins the %s side!%n", forceUser, forceSide);
+
+                } else if ((!checkIfUserExistInMap(forceBookMap, forceUser)) && forceBookMap.containsKey(forceSide)) {
+
+                    currentUserList = forceBookMap.get(forceSide);
+                    currentUserList.add(forceUser);
+                    forceBookMap.put(forceSide, currentUserList);
+
+                    System.out.printf("%s joins the %s side!%n", forceUser, forceSide);
+
+                } else if (checkIfUserExistInMap(forceBookMap, forceUser) && forceBookMap.containsKey(forceSide)) {
+
+                    if (!checkIfUserExistInList(forceBookMap.get(forceSide), forceUser)) {
+
+                        removeUserFromMap(forceBookMap, forceUser);
+                        currentUserList = forceBookMap.get(forceSide);
+                        currentUserList.add(forceUser);
+                        forceBookMap.put(forceSide, currentUserList);
+
+                        System.out.printf("%s joins the %s side!%n", forceUser, forceSide);
                     }
-                    break;
-                case "->":
-
-                    if (!forceBookMap.containsKey(inputForceSide)) {
-
-                        ArrayList<String> userList = new ArrayList<>();
-                        userList.add(inputForceUser);
-                        forceBookMap.put(inputForceSide, userList);
-
-                        System.out.printf("%s joins the %s side!%n", inputForceUser, inputForceSide);
-
-                    } else {
-
-                        if (checkIfUserExistInMap(forceBookMap, inputForceUser)) {
-
-                            removeUserFromMap(forceBookMap, inputForceUser);
-                            ArrayList<String> usersList = forceBookMap.get(inputForceSide);
-                            usersList.add(inputForceUser);
-                            forceBookMap.put(inputForceSide, usersList);
-
-                        } else {
-
-                            ArrayList<String> usersList = forceBookMap.get(inputForceSide);
-                            usersList.add(inputForceUser);
-                            forceBookMap.put(inputForceSide, usersList);
-                        }
-                    }
-                    break;
-                default:
-                    System.out.println("W.T.F is " + inputCommand);
-                    break;
+                }
             }
 
-            command = reader.nextLine();
+         command = reader.nextLine();
         }
 
         for (Map.Entry<String, ArrayList<String>> entry : forceBookMap.entrySet()) {
 
-            System.out.printf("Side: %s, Members: %d%n", entry.getKey(), entry.getValue().size());
+            if (entry.getValue().size() != 0) {
 
-            for (String user : entry.getValue()) {
+                System.out.printf("Side: %s, Members: %d%n", entry.getKey(), entry.getValue().size());
 
-                System.out.printf("! %s%n",user);
+                for (String user : entry.getValue()) {
+
+                    System.out.printf("! %s%n", user);
+                }
             }
         }
+
     }
 
     private static void removeUserFromMap(LinkedHashMap<String, ArrayList<String>> map, String user) {
