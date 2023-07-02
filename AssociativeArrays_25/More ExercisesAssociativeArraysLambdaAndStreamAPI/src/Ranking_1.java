@@ -46,14 +46,18 @@ public class Ranking_1 {
                         userPointsMap.put(inputUserName, currentPoints);
 
                         userBestPointsMap.put(inputUserName, inputPoints);
-                    } else if (userContestMap.containsKey(inputUserName) && userContestMap.get(inputUserName).contains(inputContest)) {
+                    }
+
+                    if (userContestMap.containsKey(inputUserName) && userContestMap.get(inputUserName).contains(inputContest)) {
                         int pointsPosition = userContestMap.get(inputUserName).indexOf(inputContest);
                         int currentPoints = userPointsMap.get(inputUserName).get(pointsPosition);
 
                         if (currentPoints < inputPoints) {
                             userPointsMap.get(inputUserName).set(pointsPosition, inputPoints);
                         }
-                    } else if (userContestMap.containsKey(inputUserName) && (!userContestMap.get(inputUserName).contains(inputContest))) {
+                    }
+
+                    if (userContestMap.containsKey(inputUserName) && (!userContestMap.get(inputUserName).contains(inputContest))) {
                         ArrayList<String> currentContest = userContestMap.get(inputUserName);
                         currentContest.add(inputContest);
                         userContestMap.put(inputUserName, currentContest);
