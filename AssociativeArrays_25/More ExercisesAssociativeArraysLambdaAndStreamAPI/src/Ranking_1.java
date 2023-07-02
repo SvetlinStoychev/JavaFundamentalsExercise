@@ -20,55 +20,35 @@ public class Ranking_1 {
 
         command = reader.nextLine();
 
-        TreeMap<String, ArrayList<String>> userContestMap = new TreeMap<>();
-        TreeMap<String, ArrayList<Integer>> userPointsMap = new TreeMap<>();
-        LinkedHashMap<String, Integer> userBestPointsMap = new LinkedHashMap<>();
+        TreeMap<String, LinkedHashMap<String, Integer>> userContestPointsMap = new TreeMap<>();
 
         while (!command.equals("end of submissions")) {
-            String[] commandsArr = command.split("=>");
-
-            String inputContest = commandsArr[0];
-            String inputPassword = commandsArr[1];
-            String inputUserName = commandsArr[2];
-            int inputPoints = Integer.parseInt(commandsArr[3]);
+            String[] commandArr = command.split("=>");
+            // {contest}=>{password}=>{username}=>{points}
+            String inputContest = commandArr[0];
+            String inputPassword = commandArr[1];
+            String inputUserName = commandArr[2];
+            int inputPoints = Integer.parseInt(commandArr[3]);
 
             if (contestPasswordMap.containsKey(inputContest)) {
 
                 if (contestPasswordMap.get(inputContest).equals(inputPassword)) {
 
-                    if (!userContestMap.containsKey(inputUserName)) {
-                        ArrayList<String> currentContest = new ArrayList<>();
-                        currentContest.add(inputContest);
-                        userContestMap.put(inputUserName, currentContest);
+                    if (!userContestPointsMap.containsKey(inputUserName)) {
+                        LinkedHashMap<String, Integer> currentContestPoints = new LinkedHashMap<>();
+                        currentContestPoints.put(inputContest, inputPoints);
+                        userContestPointsMap.put(inputUserName, currentContestPoints);
+                    } else {
 
-                        ArrayList<Integer> currentPoints = new ArrayList<>();
-                        currentPoints.add(inputPoints);
-                        userPointsMap.put(inputUserName, currentPoints);
+                        if (userContestPointsMap.get(inputUserName).containsKey(inputContest)) {
+                            int currentPoints = userContestPointsMap.get(inputUserName).get(inputContest);
 
-                        userBestPointsMap.put(inputUserName, inputPoints);
-                    }
-
-                    if (userContestMap.containsKey(inputUserName) && userContestMap.get(inputUserName).contains(inputContest)) {
-                        int pointsPosition = userContestMap.get(inputUserName).indexOf(inputContest);
-                        int currentPoints = userPointsMap.get(inputUserName).get(pointsPosition);
-
-                        if (currentPoints < inputPoints) {
-                            userPointsMap.get(inputUserName).set(pointsPosition, inputPoints);
+                            if (inputPoints > currentPoints) {
+                                userContestPointsMap.get(inputUserName).put(inputContest, inputPoints);
+                            }
+                        } else {
+                            userContestPointsMap.get(inputUserName).put(inputContest, inputPoints);
                         }
-                    }
-
-                    if (userContestMap.containsKey(inputUserName) && (!userContestMap.get(inputUserName).contains(inputContest))) {
-                        ArrayList<String> currentContest = userContestMap.get(inputUserName);
-                        currentContest.add(inputContest);
-                        userContestMap.put(inputUserName, currentContest);
-
-                        ArrayList<Integer> currentPoints = userPointsMap.get(inputUserName);
-                        currentPoints.add(inputPoints);
-                        userPointsMap.put(inputUserName, currentPoints);
-
-                        int currentBestPoints = userBestPointsMap.get(inputUserName);
-                        currentBestPoints += inputPoints;
-                        userBestPointsMap.put(inputUserName, currentBestPoints);
                     }
                 }
             }
@@ -76,62 +56,49 @@ public class Ranking_1 {
             command = reader.nextLine();
         }
 
-        String bestUserName = "";
+        String bestUser = "";
         int bestPoints = 0;
 
-        for (Map.Entry<String, Integer> entry : userBestPointsMap.entrySet()) {
-            String userName = entry.getKey();
-            int points = entry.getValue();
+        for (Map.Entry<String, LinkedHashMap<String, Integer>> entry : userContestPointsMap.entrySet()) {
+            int points = 0;
+
+            for (Map.Entry<String, Integer> integerEntry : entry.getValue().entrySet()) {
+
+                points += integerEntry.getValue();
+            }
 
             if (points > bestPoints) {
-                bestUserName = userName;
                 bestPoints = points;
+                bestUser = entry.getKey();
             }
         }
 
-        for (Map.Entry<String, ArrayList<Integer>> entry : userPointsMap.entrySet()) {
-            String key = entry.getKey();
-            ArrayList<Integer> value = entry.getValue();
-
-            for (int i = 0; i < value.size() - 1; i++) {
-                int biggestPoints = value.get(i);
-                int bestIndex = -1;
-
-                for (int j = i + 1; j < value.size(); j++) {
-
-                    if (biggestPoints < value.get(j)) {
-                        biggestPoints = value.get(j);
-                        bestIndex = j;
-                    }
-                }
-
-                if (bestIndex != -1) {
-                    int temPoints = value.get(i);
-                    value.set(i, value.get(bestIndex));
-                    value.set(bestIndex, temPoints);
-
-                    ArrayList<String> contestList = userContestMap.get(key);
-                    String temContest = contestList.get(i);
-                    contestList.set(i, contestList.get(bestIndex));
-                    contestList.set(bestIndex, temContest);
-                }
-            }
-        }
-
-        System.out.printf("Best candidate is %s with total %d points.%n", bestUserName, bestPoints);
-
+        System.out.printf("Best candidate is %s with total %d points.%n", bestUser, bestPoints);
         System.out.println("Ranking: ");
 
-        for (Map.Entry<String, ArrayList<String>> entry : userContestMap.entrySet()) {
-            System.out.printf("%s%n", entry.getKey());
+        ArrayList<Integer> pointsList = new ArrayList<>();
 
-            ArrayList<String> contestList = entry.getValue();
+        for (Map.Entry<String, LinkedHashMap<String, Integer>> entry : userContestPointsMap.entrySet()) {
+            System.out.println(entry.getKey());
 
-            for (String contest : contestList) {
-                int pointsPosition = contestList.indexOf(contest);
+            for (Map.Entry<String, Integer> integerEntry : entry.getValue().entrySet()) {
+                pointsList.add(integerEntry.getValue());
+            }
 
-                System.out.printf("#  %s -> %d%n", contest, userPointsMap.get(entry.getKey()).get(pointsPosition));
+            Collections.sort(pointsList);
+            Collections.reverse(pointsList);
+            String lastPrintedCourse = "";
+
+            for (Integer point : pointsList) {
+
+                for (Map.Entry<String, Integer> integerEntry : entry.getValue().entrySet()) {
+
+                    if (point == integerEntry.getValue() && (!lastPrintedCourse.equals(integerEntry.getKey()))) {
+                        lastPrintedCourse = integerEntry.getKey();
+                        System.out.printf("#  %s -> %d %n", integerEntry.getKey(), integerEntry.getValue());
+                    }
+                }
             }
         }
-    }
+     }
 }
