@@ -10,7 +10,7 @@ public class Furniture_1 {
         ArrayList<String> furnitureList = new ArrayList<>();
         double totalPrice = 0.0;
 
-        String regex = ">>(?<type>[A-Z][a-z]+)<<(?<price>\\d+\\.?\\d+)!(?<quantity>\\d+)";
+        String regex = ">>(?<type>\\w+)<<(?<price>\\d+\\.?\\d+)!(?<quantity>\\d+)";
         Pattern pattern = Pattern.compile(regex);
 
         String command = reader.nextLine();
@@ -34,6 +34,6 @@ public class Furniture_1 {
         System.out.println("Bought furniture:");
         furnitureList.forEach(System.out :: println);
 
-        System.out.printf("Total money spend: %.2f");
+        System.out.printf("Total money spend: %.2f%n", totalPrice);
     }
 }
