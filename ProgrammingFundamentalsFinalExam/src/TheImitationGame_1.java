@@ -6,41 +6,41 @@ public class TheImitationGame_1 {
         Scanner reader = new Scanner(System.in);
 
         String encryptedMessage = reader.nextLine();
-        StringBuilder decryptedMessage = new StringBuilder(encryptedMessage);
         String command = reader.nextLine();
 
         while (!command.equals("Decode")) {
-            String[] commandArr = command.split("\\|");
+            String[] commandArr = command.split("[|]");
             String currentCommand = commandArr[0];
 
             switch (currentCommand) {
-                case "Move":
+                case "Move": {
                     int numberOfLetters = Integer.parseInt(commandArr[1]);
-                    if (numberOfLetters <= decryptedMessage.length() && decryptedMessage.length() > 0) {
-                        String currentSubstring = decryptedMessage.substring(0, numberOfLetters);
-                        decryptedMessage.delete(0, numberOfLetters);
-                        decryptedMessage.append(currentSubstring);
-                    }
+                    String firstSubstring = encryptedMessage.substring(0, numberOfLetters);
+                    String secondSubstring = encryptedMessage.substring(numberOfLetters);
+                    encryptedMessage = secondSubstring.concat(firstSubstring);
                     break;
-                case "Insert":
+                }
+                case "Insert": {
                     int index = Integer.parseInt(commandArr[1]);
-                    if (index <= decryptedMessage.length() && decryptedMessage.length() > 0) {
-                        String value = commandArr[2];
-                        decryptedMessage.insert(index, value);
-                    }
+                    String value = commandArr[2];
+                    String firstSubstring = encryptedMessage.substring(0, index);
+                    String secondSubstring = encryptedMessage.substring(index);
+                    encryptedMessage = firstSubstring.concat(value).concat(secondSubstring);
                     break;
-                case "ChangeAll":
+                }
+                case "ChangeAll": {
                     String substring = commandArr[1];
                     String replacement = commandArr[2];
-                    decryptedMessage = new StringBuilder(Pattern.compile(substring).matcher(decryptedMessage).replaceAll(replacement));
+                    encryptedMessage = encryptedMessage.replace(substring, replacement);
                     break;
+                }
                 default:
+                    System.out.println("W.T.F is " + currentCommand);
                     break;
             }
-
             command = reader.nextLine();
         }
 
-        System.out.println("The decrypted message is: " + decryptedMessage);
+        System.out.println("The decrypted message is: " + encryptedMessage);
     }
 }
