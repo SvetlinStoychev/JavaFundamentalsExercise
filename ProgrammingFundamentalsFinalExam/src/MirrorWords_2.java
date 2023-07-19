@@ -57,6 +57,5 @@ public class MirrorWords_2 {
         } else {
             System.out.println("No mirror words!");
         }
-
     }
 }
