@@ -1,4 +1,5 @@
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class NeedforSpeedIII_3 {
@@ -84,7 +85,7 @@ public class NeedforSpeedIII_3 {
 
                     currentMileageFuelArr[0] = currentMileage;
                     carMileageFuelMap.put(car, currentMileageFuelArr);
-                    System.out.printf("%s mileage decreased by %d kilometers", car, kilometers);
+                    System.out.printf("%s mileage decreased by %d kilometers%n", car, kilometers);
                 }
                     break;
                 default:
@@ -94,6 +95,12 @@ public class NeedforSpeedIII_3 {
             command = reader.nextLine();
         }
 
-        
+        for (Map.Entry<String, int[]> entry : carMileageFuelMap.entrySet()) {
+            String car = entry.getKey();
+            int[] mileageFuelArr = entry.getValue();
+            int mileage = mileageFuelArr[0];
+            int fuel = mileageFuelArr[1];
+            System.out.printf("%s -> Mileage: %d kms, Fuel in the tank: %d lt.%n", car, mileage, fuel);
+        }
     }
 }
