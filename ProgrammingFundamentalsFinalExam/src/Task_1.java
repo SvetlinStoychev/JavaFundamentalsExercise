@@ -37,13 +37,26 @@ public class Task_1 {
                 }
                     break;
                 case "Divination": {
-                    
+                    String firstSubstring = commandsArr[1];
+
+                    if (spell.contains(firstSubstring)) {
+                        String secondSubstring = commandsArr[2];
+                        spell = spell.replace(firstSubstring, secondSubstring);
+                        System.out.println(spell);
+                    }
                 }
                     break;
-                case "Alteration":
+                case "Alteration": {
+                    String substring = commandsArr[1];
+
+                    if (spell.contains(substring)) {
+                        spell = spell.replace(substring, "");
+                        System.out.println(spell);
+                    }
+                }
                     break;
                 default:
-                    System.out.println("W.T.F is " + currentCommand);
+                    System.out.println("The spell did not work!");
                     break;
             }
 
